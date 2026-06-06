@@ -89,12 +89,43 @@
 
   footer{padding:36px 0;color:var(--muted);font-size:13px;text-align:center}
 
+  /* ── MOBILE ── */
   @media (max-width:760px){
+    /* Nav */
+    nav ul{gap:16px}
+    nav ul li a{font-size:13px}
+    .container{padding:0 20px}
+
+    /* Hero */
+    .hero{padding:60px 0 80px}
+    h1{font-size:clamp(32px,8vw,48px);letter-spacing:-.025em}
+    .lede{font-size:16px}
+    .btn{padding:12px 18px;font-size:13px}
+    .cta-row{flex-direction:column;width:100%}
+    .cta-row .btn{width:100%;justify-content:center}
+    .hero-socials{margin-top:32px;padding-top:24px}
+
+    /* About */
+    .about-inner{flex-direction:column;text-align:center;gap:28px}
+    .about-photo{width:120px;height:120px}
+    .about-body{font-size:16px}
+
+    /* Sections */
+    section{padding:72px 0}
+    .section-title{font-size:32px;margin-bottom:40px}
+
+    /* Contact */
+    .contact-card{padding:28px 20px;border-radius:16px}
     form{grid-template-columns:1fr}
     .field.full,.submit-row{grid-column:span 1}
-    .contact-card{padding:32px 24px}
-    nav ul{display:none}
-    h1{font-size:40px}
+    .submit-row{justify-content:center}
+    .submit-row .btn{width:100%;justify-content:center}
+    .contact-footer{flex-direction:column;align-items:flex-start;gap:12px}
+  }
+
+  @media (max-width:400px){
+    h1{font-size:28px}
+    .hero{padding:48px 0 64px}
   }
 </style>
 </head>
@@ -177,6 +208,8 @@
   const canvas = document.getElementById('particles');
   const ctx = canvas.getContext('2d');
   let W, H, particles;
+  let rafId = null;        // track the animation frame so we can cancel it
+  let resizeTimer = null;  // debounce timer
   const COUNT = 80;
   const MAX_DIST = 130;
 
@@ -233,13 +266,24 @@
       if(p.y < 0 || p.y > H) p.vy *= -1;
     });
 
-    requestAnimationFrame(draw);
+    rafId = requestAnimationFrame(draw);
   }
 
-  resize();
-  createParticles();
-  draw();
-  window.addEventListener('resize', () => { resize(); createParticles(); });
+  function start(){
+    // Cancel any existing loop before starting a new one
+    if(rafId) cancelAnimationFrame(rafId);
+    resize();
+    createParticles();
+    draw();
+  }
+
+  start();
+
+  // Debounce resize — waits 150ms after you stop dragging before restarting
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(start, 150);
+  });
 })();
 </script>
 </body>
