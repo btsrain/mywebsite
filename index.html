@@ -176,15 +176,15 @@
       <form action="https://formspree.io/f/xrevpbrq" method="POST">
         <div class="field">
           <label for="name">Your name</label>
-          <input id="name" type="text" required />
+          <input id="name" name="name" type="text" required />
         </div>
         <div class="field">
           <label for="email">Email</label>
-          <input id="email" type="email" required />
+          <input id="email" name="email" type="email" required />
         </div>
         <div class="field full">
           <label for="msg">About the project</label>
-          <textarea id="msg" placeholder="What are you building? Timeline? Budget range?" required></textarea>
+          <textarea id="msg" name="message" placeholder="What are you building? Timeline? Budget range?" required></textarea>
         </div>
         <div class="submit-row">
           <button class="btn btn-primary" type="submit">Send inquiry →</button>
